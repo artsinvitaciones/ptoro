@@ -25,7 +25,7 @@
     #video2 { z-index: 4; display: none; }
     #video3 { z-index: 3; display: none; }
     #video4 { z-index: 2; display: none; }
-    #video5 { z-index: 1; display: none; /* Hidden initially */ }
+    #video5 { z-index: 1; display: none; }
 
     #unsupported-browser {
       position: fixed;
@@ -218,11 +218,16 @@
       });
 
       videos[1].addEventListener("click", () => {
+        // Solo inicia reproducción si está pausado
+        if (!videos[1].paused) return;
         videos[1].muted = false;
         videos[1].play();
         audio.play();
       });
-      videos[1].addEventListener("ended", () => continueButtons[0].style.display = "block");
+      videos[1].addEventListener("ended", () => {
+        continueButtons[0].style.display = "block";
+      });
+
       continueButtons[0].addEventListener("click", () => showVideo(2, 0));
 
       videos[2].addEventListener("ended", () => continueButtons[1].style.display = "block");
@@ -233,7 +238,7 @@
 
       videos[4].addEventListener("ended", () => {
         videos[4].style.display = "none";
-        videos[5].style.display = "block"; // Show video5 immediately
+        videos[5].style.display = "block";
         videos[5].play();
         videos[5].loop = true;
         buttonsContainer.classList.add("enabled");
@@ -245,7 +250,7 @@
       });
 
       repeatButton.addEventListener("click", () => {
-      location.reload();
+        location.reload();
       });
 
       function showVideo(next, btnIdx) {
