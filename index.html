@@ -245,22 +245,7 @@
       });
 
       repeatButton.addEventListener("click", () => {
-        videos.slice(1, 5).forEach(v => {
-          v.pause();
-          v.currentTime = 0;
-          v.style.display = "none";
-        });
-        videos[5].pause();
-        videos[5].style.display = "none"; // Hide video5 initially
-        videos[1].style.display = "block";
-        audio.pause();
-        audio.currentTime = 0;
-        buttonsContainer.classList.remove("enabled");
-        allLinks.forEach(link => {
-          link.classList.add("inactive-link");
-          link.setAttribute("tabindex", "-1");
-          link.style.pointerEvents = "none";
-        });
+      location.reload();
       });
 
       function showVideo(next, btnIdx) {
