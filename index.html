@@ -94,7 +94,6 @@
       .button-img { width: 70px; }
     }
 
-    /* Estilo de botón animado */
     .animated-button {
       width: 200px;
       height: 70px;
@@ -191,7 +190,6 @@
 </head>
 <body oncontextmenu="return false">
 
-  <!-- Navegador no compatible -->
   <div id="unsupported-browser">
     <div>
       <p>⚠️ Lo sentimos 😢</p>
@@ -200,15 +198,12 @@
     </div>
   </div>
 
-  <!-- Fallback para autoplay bloqueado -->
   <div id="start-fallback">Toca para comenzar</div>
 
-  <!-- Video Intro -->
   <video id="video0" autoplay playsinline muted preload="auto">
     <source src="assets/video0.mp4" type="video/mp4" />
   </video>
 
-  <!-- Videos Interactivos -->
   <video id="video1" class="video-step" playsinline muted preload="auto">
     <source src="assets/video1.mp4" type="video/mp4" />
   </video>
@@ -222,17 +217,14 @@
     <source src="assets/video4.mp4" type="video/mp4" />
   </video>
 
-  <!-- Video final -->
   <video id="video5" class="video-step" playsinline loop muted preload="auto" style="display: none;">
     <source src="assets/video5.mp4" type="video/mp4" />
   </video>
 
-  <!-- Música -->
   <audio id="audio" loop preload="auto">
     <source src="assets/music.mp3" type="audio/mpeg" />
   </audio>
 
-  <!-- Botón Comenzar -->
   <div class="continue-button" id="start-button">
     <button class="animated-button">
       Comenzar
@@ -240,7 +232,6 @@
     </button>
   </div>
 
-  <!-- Botón Continuar -->
   <div class="continue-button" id="continue-button">
     <button class="animated-button">
       Continuar
@@ -248,7 +239,6 @@
     </button>
   </div>
 
-  <!-- Botones Finales -->
   <div class="final-buttons" id="final-buttons">
     <div class="buttons-container">
       <div>
@@ -359,9 +349,20 @@
         }, { once: true });
       }
 
+      // ✅ Corrección aquí
       function showContinue(callback) {
         continueBtn.classList.add("enabled");
         const btn = continueBtn.querySelector("button");
+
+        // Reiniciar animaciones visuales (opcional, pero mejora UX)
+        const spans = btn.querySelectorAll("span");
+        spans.forEach(span => {
+          span.style.animation = 'none';
+          span.offsetHeight;
+          span.style.animation = '';
+        });
+
+        btn.onclick = null;
         btn.onclick = () => {
           continueBtn.classList.remove("enabled");
           callback();
