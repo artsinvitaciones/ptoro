@@ -25,7 +25,7 @@
     #video2 { z-index: 4; display: none; }
     #video3 { z-index: 3; display: none; }
     #video4 { z-index: 2; display: none; }
-    #video5 { z-index: 1; display: none; }
+    #video5 { z-index: 1; display: none; /* Hidden initially */ }
 
     #unsupported-browser {
       position: fixed;
@@ -183,7 +183,7 @@
   </div>
 
   <script>
-    const videos = [...Array(6)].map((_, i) => document.getElementById(`video${i}`));
+    const videos = [...Array(6)].map((_, i) => document.getElementById(video${i}));
     const audio = document.getElementById("audio");
     const fallback = document.getElementById("start-fallback");
     const unsupported = document.getElementById("unsupported-browser");
@@ -217,10 +217,12 @@
         videos[1].style.display = "block";
       });
 
-      videos[1].addEventListener("ended", () => {
-        continueButtons[0].style.display = "block";
+      videos[1].addEventListener("click", () => {
+        videos[1].muted = false;
+        videos[1].play();
+        audio.play();
       });
-
+      videos[1].addEventListener("ended", () => continueButtons[0].style.display = "block");
       continueButtons[0].addEventListener("click", () => showVideo(2, 0));
 
       videos[2].addEventListener("ended", () => continueButtons[1].style.display = "block");
@@ -231,7 +233,7 @@
 
       videos[4].addEventListener("ended", () => {
         videos[4].style.display = "none";
-        videos[5].style.display = "block";
+        videos[5].style.display = "block"; // Show video5 immediately
         videos[5].play();
         videos[5].loop = true;
         buttonsContainer.classList.add("enabled");
@@ -243,7 +245,7 @@
       });
 
       repeatButton.addEventListener("click", () => {
-        location.reload();
+      location.reload();
       });
 
       function showVideo(next, btnIdx) {
@@ -252,13 +254,6 @@
         videos[next].style.display = "block";
         videos[next].play();
       }
-
-      document.addEventListener('click', e => {
-        // Evitar que clics en el video reinicien la reproducción
-        if (e.target.tagName.toLowerCase() === 'video') {
-          e.preventDefault();
-        }
-      });
 
       document.addEventListener('contextmenu', e => e.preventDefault());
     }
