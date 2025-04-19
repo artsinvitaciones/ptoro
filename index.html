@@ -22,18 +22,9 @@
       object-fit: cover;
     }
 
-    #video0 {
-      z-index: 3;
-      opacity: 1;
-    }
-
-    .video-step {
-      z-index: 2;
-      display: none;
-    }
-    .video-step.active {
-      display: block;
-    }
+    #video0 { z-index: 3; }
+    .video-step { z-index: 2; display: none; }
+    .video-step.active { display: block; }
 
     .continue-button, .final-buttons {
       position: absolute;
@@ -98,6 +89,15 @@
       color: white;
     }
 
+    .fade-in {
+      animation: fadeIn 1s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
     @media (max-width: 480px) {
       .button-img { width: 50px; }
     }
@@ -111,24 +111,20 @@
 </head>
 <body oncontextmenu="return false">
 
-  <!-- Navegador no compatible -->
   <div id="unsupported-browser">
     <div>
-      <p>⚠️ Lo sentimos 😢</p>
+      <p>⚠️ Lo sentimos 😭</p>
       <p>Tu navegador no es compatible con esta experiencia interactiva.</p>
       <p>Usa Google Chrome o Firefox.</p>
     </div>
   </div>
 
-  <!-- Fallback para autoplay bloqueado -->
   <div id="start-fallback">Toca para comenzar</div>
 
-  <!-- Video Intro -->
   <video id="video0" autoplay playsinline muted preload="auto">
     <source src="assets/video0.mp4" type="video/mp4" />
   </video>
 
-  <!-- Videos Interactivos -->
   <video id="video1" class="video-step" playsinline muted preload="auto">
     <source src="assets/video1.mp4" type="video/mp4" />
   </video>
@@ -142,27 +138,22 @@
     <source src="assets/video4.mp4" type="video/mp4" />
   </video>
 
-  <!-- Video final -->
   <video id="video5" class="video-step" playsinline loop muted preload="auto" style="display: none;">
     <source src="assets/video5.mp4" type="video/mp4" />
   </video>
 
-  <!-- Música -->
   <audio id="audio" loop preload="auto">
     <source src="assets/music.mp3" type="audio/mpeg" />
   </audio>
 
-  <!-- Botón Comenzar -->
   <div class="continue-button" id="start-button">
     <button>Comenzar</button>
   </div>
 
-  <!-- Botón Continuar -->
   <div class="continue-button" id="continue-button">
     <button>Continuar</button>
   </div>
 
-  <!-- Botones Finales -->
   <div class="final-buttons" id="final-buttons">
     <div class="buttons-container">
       <div>
@@ -223,18 +214,13 @@
       });
 
       video0.addEventListener("ended", () => {
-        video0.style.transition = "opacity 1s ease";
-        video0.style.opacity = 0;
-
-        setTimeout(() => {
-          video0.style.display = "none";
-          const video = videos[0]; // video1
-          video.classList.add("active");
-          video.muted = false;
-          video.pause();
-          video.currentTime = 0;
-          startBtn.classList.add("enabled");
-        }, 1000);
+        video0.style.display = "none";
+        const video = videos[0];
+        video.classList.add("active", "fade-in");
+        video.muted = false;
+        video.pause();
+        video.currentTime = 0;
+        startBtn.classList.add("enabled");
       });
 
       startBtn.querySelector("button").onclick = () => {
@@ -307,7 +293,6 @@
         audio.currentTime = 0;
 
         video0.currentTime = 0;
-        video0.style.opacity = 1;
         video0.style.display = "block";
         video0.play().catch(() => {
           fallback.style.display = "flex";
