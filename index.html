@@ -92,7 +92,7 @@
       bottom: 30px;
       left: 50%;
       transform: translateX(-50%);
-      z-index: 10;
+      z-index: 11;
       padding: 10px 20px;
       background: rgba(255,255,255,0.1);
       border: 2px solid white;
@@ -100,6 +100,22 @@
       cursor: pointer;
       font-size: 18px;
       display: none;
+    }
+
+    .continue-image {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);  /* Centra horizontalmente */
+      height: 100%;
+      aspect-ratio: 9 / 16;
+      object-fit: cover;
+      z-index: 10;
+      opacity: 0;
+      transition: opacity 0.8s ease;
+      pointer-events: none;
+      margin: 0 auto;
+      display: block;
     }
 
     .buttons-container {
@@ -166,6 +182,11 @@
 
   <div id="start-fallback">Toca para comenzar</div>
 
+  <!-- PNGs que acompañan a los botones de continuar -->
+  <img src="assets/png1.png" alt="Imagen 1" id="img1" class="continue-image" />
+  <img src="assets/png2.png" alt="Imagen 2" id="img2" class="continue-image" />
+  <img src="assets/png3.png" alt="Imagen 3" id="img3" class="continue-image" />
+
   <!-- Videos -->
   <div class="video-wrapper">
     <video id="video0" autoplay playsinline muted preload="auto" controlsList="nodownload">
@@ -222,6 +243,11 @@
       document.getElementById("continue2"),
       document.getElementById("continue3")
     ];
+    const continueImages = [
+      document.getElementById("img1"),
+      document.getElementById("img2"),
+      document.getElementById("img3")
+    ];
     const buttonsContainer = document.getElementById("buttons-container");
     const allLinks = document.querySelectorAll(".buttons-container a");
     const repeatButton = document.getElementById("repeat-button");
@@ -257,16 +283,26 @@
 
       videos[1].addEventListener("click", handleVideo1Click);
 
-      videos[1].addEventListener("ended", () => continueButtons[0].style.display = "block");
+      videos[1].addEventListener("ended", () => {
+        continueButtons[0].style.display = "block";
+        continueImages[0].style.opacity = 1;
+      });
       continueButtons[0].addEventListener("click", () => {
         showVideo(2, 0);
-        videos[1].style.pointerEvents = "none";
       });
 
-      videos[2].addEventListener("ended", () => continueButtons[1].style.display = "block");
-      continueButtons[1].addEventListener("click", () => showVideo(3, 1));
+      videos[2].addEventListener("ended", () => {
+        continueButtons[1].style.display = "block";
+        continueImages[1].style.opacity = 1;
+      });
+      continueButtons[1].addEventListener("click", () => {
+        showVideo(3, 1);
+      });
 
-      videos[3].addEventListener("ended", () => continueButtons[2].style.display = "block");
+      videos[3].addEventListener("ended", () => {
+        continueButtons[2].style.display = "block";
+        continueImages[2].style.opacity = 1;
+      });
       continueButtons[2].addEventListener("click", () => {
         showVideo(4, 2);
       });
@@ -305,11 +341,14 @@
           link.setAttribute("tabindex", "-1");
           link.style.pointerEvents = "none";
         });
+        continueButtons.forEach(btn => btn.style.display = "none");
+        continueImages.forEach(img => img.style.opacity = 0);
       });
 
-      function showVideo(next, btnIdx) {
+      function showVideo(next, idx) {
         videos[next - 1].style.display = "none";
-        continueButtons[btnIdx].style.display = "none";
+        continueButtons[idx].style.display = "none";
+        continueImages[idx].style.opacity = 0;
         videos[next].style.display = "block";
         videos[next].play();
       }
