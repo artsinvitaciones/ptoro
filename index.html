@@ -247,13 +247,17 @@
       });
 
       videos[4].addEventListener("ended", () => {
-        videos[5].style.display = "block";
+        videos[5].pause();
         videos[5].currentTime = 0;
-        videos[5].play().then(() => {
-          videos[5].style.opacity = 1;
-        }).catch(err => {
-          console.error("Error al reproducir video5:", err);
-        });
+        videos[5].style.display = "block";
+
+        setTimeout(() => {
+          videos[5].play().then(() => {
+            videos[5].style.opacity = 1;
+          }).catch(err => {
+            console.error("Error al reproducir video5:", err);
+          });
+        }, 100);
 
         buttonsContainer.classList.add("enabled");
         allLinks.forEach(link => {
