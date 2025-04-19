@@ -217,13 +217,6 @@
         videos[1].style.display = "block";
       });
 
-      videos[1].addEventListener("click", () => {
-        // Solo inicia reproducción si está pausado
-        if (!videos[1].paused) return;
-        videos[1].muted = false;
-        videos[1].play();
-        audio.play();
-      });
       videos[1].addEventListener("ended", () => {
         continueButtons[0].style.display = "block";
       });
@@ -259,6 +252,13 @@
         videos[next].style.display = "block";
         videos[next].play();
       }
+
+      document.addEventListener('click', e => {
+        // Evitar que clics en el video reinicien la reproducción
+        if (e.target.tagName.toLowerCase() === 'video') {
+          e.preventDefault();
+        }
+      });
 
       document.addEventListener('contextmenu', e => e.preventDefault());
     }
