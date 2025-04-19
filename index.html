@@ -4,10 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Intro Interactiva</title>
-
-  <!-- Fuente Lato -->
-  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@600&display=swap" rel="stylesheet">
-
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
@@ -15,7 +11,7 @@
       height: 100%;
       overflow: hidden;
       background: black;
-      font-family: 'Lato', sans-serif;
+      font-family: sans-serif;
     }
 
     video {
@@ -49,6 +45,15 @@
       opacity: 1;
       visibility: visible;
       pointer-events: auto;
+    }
+
+    .continue-button button {
+      padding: 10px 20px;
+      font-size: 18px;
+      background: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
     }
 
     .buttons-container {
@@ -93,102 +98,11 @@
     @media (min-width: 769px) {
       .button-img { width: 70px; }
     }
-
-    .animated-button {
-      width: 200px;
-      height: 70px;
-      background: linear-gradient(to left top, #c32c71 50%, #b33771 50%);
-      border-style: none;
-      color: #fff;
-      font-size: 23px;
-      letter-spacing: 3px;
-      font-family: 'Lato', sans-serif;
-      font-weight: 600;
-      outline: none;
-      cursor: pointer;
-      position: relative;
-      padding: 0px;
-      overflow: hidden;
-      transition: all 0.5s;
-      box-shadow: 0px 1px 2px rgba(0,0,0,.2);
-    }
-
-    .animated-button span {
-      position: absolute;
-      display: block;
-    }
-
-    .animated-button span:nth-child(1) {
-      height: 3px;
-      width: 200px;
-      top: 0px;
-      left: -200px;
-      background: linear-gradient(to right, rgba(0,0,0,0), #f6e58d);
-      animation: span1 2s linear infinite;
-      animation-delay: 1s;
-    }
-
-    @keyframes span1 {
-      0% { left: -200px; }
-      100% { left: 200px; }
-    }
-
-    .animated-button span:nth-child(2) {
-      height: 70px;
-      width: 3px;
-      top: -70px;
-      right: 0px;
-      background: linear-gradient(to bottom, rgba(0,0,0,0), #f6e58d);
-      animation: span2 2s linear infinite;
-      animation-delay: 2s;
-    }
-
-    @keyframes span2 {
-      0% { top: -70px; }
-      100% { top: 70px; }
-    }
-
-    .animated-button span:nth-child(3) {
-      height: 3px;
-      width: 200px;
-      right: -200px;
-      bottom: 0px;
-      background: linear-gradient(to left, rgba(0,0,0,0), #f6e58d);
-      animation: span3 2s linear infinite;
-      animation-delay: 3s;
-    }
-
-    @keyframes span3 {
-      0% { right: -200px; }
-      100% { right: 200px; }
-    }
-
-    .animated-button span:nth-child(4) {
-      height: 70px;
-      width: 3px;
-      bottom: -70px;
-      left: 0px;
-      background: linear-gradient(to top, rgba(0,0,0,0), #f6e58d);
-      animation: span4 2s linear infinite;
-      animation-delay: 4s;
-    }
-
-    @keyframes span4 {
-      0% { bottom: -70px; }
-      100% { bottom: 70px; }
-    }
-
-    .animated-button:hover {
-      transform: rotate(-3deg) scale(1.1);
-      box-shadow: 0px 3px 5px rgba(0,0,0,.4);
-    }
-
-    .animated-button:hover span {
-      animation-play-state: paused;
-    }
   </style>
 </head>
 <body oncontextmenu="return false">
+
+  <!-- Navegador no compatible -->
   <div id="unsupported-browser">
     <div>
       <p>⚠️ Lo sentimos 😢</p>
@@ -197,12 +111,15 @@
     </div>
   </div>
 
+  <!-- Fallback para autoplay bloqueado -->
   <div id="start-fallback">Toca para comenzar</div>
 
+  <!-- Video Intro -->
   <video id="video0" autoplay playsinline muted preload="auto">
     <source src="assets/video0.mp4" type="video/mp4" />
   </video>
 
+  <!-- Videos Interactivos -->
   <video id="video1" class="video-step" playsinline muted preload="auto">
     <source src="assets/video1.mp4" type="video/mp4" />
   </video>
@@ -216,28 +133,27 @@
     <source src="assets/video4.mp4" type="video/mp4" />
   </video>
 
+  <!-- Video final -->
   <video id="video5" class="video-step" playsinline loop muted preload="auto" style="display: none;">
     <source src="assets/video5.mp4" type="video/mp4" />
   </video>
 
+  <!-- Música -->
   <audio id="audio" loop preload="auto">
     <source src="assets/music.mp3" type="audio/mpeg" />
   </audio>
 
+  <!-- Botón Comenzar (nuevo) -->
   <div class="continue-button" id="start-button">
-    <button class="animated-button">
-      Comenzar
-      <span></span><span></span><span></span><span></span>
-    </button>
+    <button>Comenzar</button>
   </div>
 
+  <!-- Botón Continuar (ya estaba) -->
   <div class="continue-button" id="continue-button">
-    <button class="animated-button">
-      Continuar
-      <span></span><span></span><span></span><span></span>
-    </button>
+    <button>Continuar</button>
   </div>
 
+  <!-- Botones Finales -->
   <div class="final-buttons" id="final-buttons">
     <div class="buttons-container">
       <div>
@@ -299,7 +215,7 @@
 
       video0.addEventListener("ended", () => {
         video0.style.display = "none";
-        const video = videos[0];
+        const video = videos[0]; // video1
         video.classList.add("active");
         video.muted = false;
         video.pause();
@@ -309,7 +225,7 @@
 
       startBtn.querySelector("button").onclick = () => {
         startBtn.classList.remove("enabled");
-        const video = videos[0];
+        const video = videos[0]; // video1
         video.play();
         audio.play();
 
@@ -348,15 +264,10 @@
         }, { once: true });
       }
 
-      // 🔧 CORRECCIÓN APLICADA AQUÍ
       function showContinue(callback) {
         continueBtn.classList.add("enabled");
         const btn = continueBtn.querySelector("button");
-
-        const newBtn = btn.cloneNode(true);
-        btn.parentNode.replaceChild(newBtn, btn);
-
-        newBtn.onclick = () => {
+        btn.onclick = () => {
           continueBtn.classList.remove("enabled");
           callback();
         };
