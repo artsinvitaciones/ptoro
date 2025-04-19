@@ -25,7 +25,7 @@
     #video2 { z-index: 4; display: none; }
     #video3 { z-index: 3; display: none; }
     #video4 { z-index: 2; display: none; }
-    #video5 { z-index: 1; opacity: 0; transition: opacity 1s ease; }
+    #video5 { z-index: 1; visibility: hidden; }
 
     #unsupported-browser {
       position: fixed;
@@ -233,7 +233,7 @@
 
       videos[4].addEventListener("ended", () => {
         videos[4].style.display = "none";
-        videos[5].style.opacity = 1;
+        videos[5].style.visibility = "visible"; // Make video5 visible immediately
         videos[5].play();
         videos[5].loop = true;
         buttonsContainer.classList.add("enabled");
@@ -251,7 +251,7 @@
           v.style.display = "none";
         });
         videos[5].pause();
-        videos[5].style.opacity = 0;
+        videos[5].style.visibility = "hidden"; // Hide video5 initially
         videos[1].style.display = "block";
         audio.pause();
         audio.currentTime = 0;
