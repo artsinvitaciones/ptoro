@@ -224,16 +224,18 @@
       });
       videos[1].addEventListener("ended", () => continueButtons[0].style.display = "block");
       continueButtons[0].addEventListener("click", () => showVideo(2, 0));
+
       videos[2].addEventListener("ended", () => continueButtons[1].style.display = "block");
       continueButtons[1].addEventListener("click", () => showVideo(3, 1));
+
       videos[3].addEventListener("ended", () => continueButtons[2].style.display = "block");
-      continueButtons[2].addEventListener("click", () => {
-        showVideo(4, 2);
-        videos[5].play();
-      });
+      continueButtons[2].addEventListener("click", () => showVideo(4, 2));
 
       videos[4].addEventListener("ended", () => {
+        videos[4].style.display = "none";
         videos[5].style.opacity = 1;
+        videos[5].play();
+        videos[5].loop = true;
         buttonsContainer.classList.add("enabled");
         allLinks.forEach(link => {
           link.classList.remove("inactive-link");
