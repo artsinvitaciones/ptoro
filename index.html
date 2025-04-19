@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Intro Secuencial 5 Videos</title>
+  <title>Intro Interactiva</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
@@ -22,177 +22,285 @@
       object-fit: cover;
     }
 
-    #video0, #video1, #video2, #video3, #video4 { z-index: 3; }
-    #backgroundVideo { z-index: 1; opacity: 0; transition: opacity 1s ease; }
+    #video0 { z-index: 3; }
+    .video-step { z-index: 2; display: none; }
+    .video-step.active { display: block; }
 
-    .buttons-container {
+    .continue-button, .final-buttons {
       position: absolute;
-      bottom: 10px;
-      left: 0; right: 0;
+      bottom: 30px;
+      left: 0;
+      right: 0;
       display: flex;
       justify-content: center;
-      gap: 15px;
+      align-items: center;
+      z-index: 4;
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
       transition: opacity 1s ease;
-      z-index: 4;
     }
 
-    .buttons-container.enabled {
+    .continue-button.enabled, .final-buttons.enabled {
       opacity: 1;
       visibility: visible;
       pointer-events: auto;
     }
 
-    .button-img {
-      width: 60px;
+    .continue-button button {
+      padding: 10px 20px;
+      font-size: 18px;
+      background: white;
+      border: none;
+      border-radius: 8px;
       cursor: pointer;
     }
 
+    .buttons-container {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .button-img {
+      width: 60px;
+      cursor: pointer;
+      transition: opacity 0.3s ease;
+    }
+
+    .button-img:hover { opacity: 0.8; }
+    .inactive-link { pointer-events: none; }
+
     #unsupported-browser, #start-fallback {
       position: fixed;
-      top: 0; left: 0;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
+      background: black;
+      z-index: 9999;
       display: none;
       justify-content: center;
       align-items: center;
       text-align: center;
       padding: 20px;
-      background: rgba(0,0,0,0.9);
       color: white;
-      z-index: 9999;
     }
 
-    #start-fallback { cursor: pointer; z-index: 10000; }
+    .fade-in {
+      animation: fadeIn 1s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @media (max-width: 480px) {
+      .button-img { width: 50px; }
+    }
+    @media (min-width: 481px) and (max-width: 768px) {
+      .button-img { width: 60px; }
+    }
+    @media (min-width: 769px) {
+      .button-img { width: 70px; }
+    }
   </style>
 </head>
 <body oncontextmenu="return false">
 
   <div id="unsupported-browser">
     <div>
-      <p>⚠️ Tu navegador no es compatible. Usa Chrome o Firefox.</p>
+      <p>⚠️ Lo sentimos 😭</p>
+      <p>Tu navegador no es compatible con esta experiencia interactiva.</p>
+      <p>Usa Google Chrome o Firefox.</p>
     </div>
   </div>
 
   <div id="start-fallback">Toca para comenzar</div>
 
-  <!-- Videos secuenciales -->
-  <video id="video0" autoplay muted playsinline preload="auto">
-    <source src="assets/video0.mp4" type="video/mp4">
-  </video>
-  <video id="video1" playsinline muted preload="auto">
-    <source src="assets/video1.mp4" type="video/mp4">
-  </video>
-  <video id="video2" playsinline muted preload="auto">
-    <source src="assets/video2.mp4" type="video/mp4">
-  </video>
-  <video id="video3" playsinline muted preload="auto">
-    <source src="assets/video3.mp4" type="video/mp4">
-  </video>
-  <video id="video4" playsinline muted preload="auto">
-    <source src="assets/video4.mp4" type="video/mp4">
+  <video id="video0" autoplay playsinline muted preload="auto">
+    <source src="assets/video0.mp4" type="video/mp4" />
   </video>
 
-  <!-- Fondo -->
-  <video id="backgroundVideo" playsinline muted loop preload="auto">
-    <source src="assets/fondo.mp4" type="video/mp4">
+  <video id="video1" class="video-step" playsinline muted preload="auto">
+    <source src="assets/video1.mp4" type="video/mp4" />
+  </video>
+  <video id="video2" class="video-step" playsinline muted preload="auto">
+    <source src="assets/video2.mp4" type="video/mp4" />
+  </video>
+  <video id="video3" class="video-step" playsinline muted preload="auto">
+    <source src="assets/video3.mp4" type="video/mp4" />
+  </video>
+  <video id="video4" class="video-step" playsinline muted preload="auto">
+    <source src="assets/video4.mp4" type="video/mp4" />
   </video>
 
-  <!-- Audio -->
+  <video id="video5" class="video-step" playsinline loop muted preload="auto" style="display: none;">
+    <source src="assets/video5.mp4" type="video/mp4" />
+  </video>
+
   <audio id="audio" loop preload="auto">
-    <source src="assets/music.mp3" type="audio/mpeg">
+    <source src="assets/music.mp3" type="audio/mpeg" />
   </audio>
 
-  <!-- Botones -->
-  <div class="buttons-container" id="buttons-container">
-    <a href="https://maps.app.goo.gl/xxx" target="_blank">
-      <img src="assets/salon.png" class="button-img" />
-    </a>
-    <a href="https://wa.me/59100000000" target="_blank">
-      <img src="assets/asistencia.png" class="button-img" />
-    </a>
-    <img src="assets/repetir.png" id="repeat-button" class="button-img" />
+  <div class="continue-button" id="start-button">
+    <button>Comenzar</button>
+  </div>
+
+  <div class="continue-button" id="continue-button">
+    <button>Continuar</button>
+  </div>
+
+  <div class="final-buttons" id="final-buttons">
+    <div class="buttons-container">
+      <div>
+        <a href="https://maps.app.goo.gl/iLidSW6oDsJFU3Z18" target="_blank">
+          <img src="assets/salon.png" class="button-img" alt="Salón" />
+        </a>
+      </div>
+      <div>
+        <a href="https://api.whatsapp.com/send?phone=+59175200294&text=Hola%20quiero%20confirmar%20mi%20asistencia" target="_blank">
+          <img src="assets/botonasistencia.png" class="button-img" alt="Confirmar asistencia" />
+        </a>
+      </div>
+      <div>
+        <img src="assets/repetir.png" class="button-img" alt="Repetir" id="repeat-button" />
+      </div>
+    </div>
   </div>
 
   <script>
+    const ua = navigator.userAgent.toLowerCase();
+    const isXiaomi = /miuibrowser|miui|miwebview/.test(ua);
+
+    const fallback = document.getElementById("start-fallback");
+    const unsupported = document.getElementById("unsupported-browser");
+
+    const video0 = document.getElementById("video0");
     const videos = [
-      document.getElementById("video0"),
       document.getElementById("video1"),
       document.getElementById("video2"),
       document.getElementById("video3"),
       document.getElementById("video4")
     ];
-    const background = document.getElementById("backgroundVideo");
+    const video5 = document.getElementById("video5");
+
     const audio = document.getElementById("audio");
-    const buttons = document.getElementById("buttons-container");
-    const fallback = document.getElementById("start-fallback");
-    const unsupported = document.getElementById("unsupported-browser");
-    const repeatButton = document.getElementById("repeat-button");
+    const startBtn = document.getElementById("start-button");
+    const continueBtn = document.getElementById("continue-button");
+    const finalButtons = document.getElementById("final-buttons");
+    const repeatBtn = document.getElementById("repeat-button");
 
-    const userAgent = navigator.userAgent.toLowerCase();
-    const isUnsupported = /miuibrowser|miui|miwebview/.test(userAgent);
-
-    if (isUnsupported) {
+    if (isXiaomi) {
       unsupported.style.display = "flex";
+      video0.style.display = "none";
       videos.forEach(v => v.style.display = "none");
-      background.style.display = "none";
-      buttons.style.display = "none";
+      video5.style.display = "none";
       audio.remove();
+      startBtn.remove();
+      continueBtn.remove();
+      finalButtons.remove();
     } else {
-      // Forzar precarga
-      videos.forEach((v, i) => i !== 0 && v.load());
-      background.load();
-
-      // Fallback si autoplay bloqueado
       window.addEventListener("load", () => {
-        videos[0].play().catch(err => {
+        video0.play().catch(() => {
           fallback.style.display = "flex";
           fallback.addEventListener("click", () => {
-            videos[0].play().then(() => fallback.style.display = "none");
+            video0.play().then(() => fallback.style.display = "none");
           });
         });
       });
 
-      // Reproducción secuencial
-      for (let i = 0; i < videos.length - 1; i++) {
-        videos[i].addEventListener("ended", () => {
-          videos[i].style.display = "none";
-          videos[i+1].style.display = "block";
-          videos[i+1].play();
-        });
-      }
-
-      // Último video
-      videos[4].addEventListener("ended", () => {
-        videos[4].style.display = "none";
-        background.style.opacity = 1;
-        background.play();
-        audio.play();
-        buttons.classList.add("enabled");
+      video0.addEventListener("ended", () => {
+        video0.style.display = "none";
+        const video = videos[0];
+        video.classList.add("active", "fade-in");
+        video.muted = false;
+        video.pause();
+        video.currentTime = 0;
+        startBtn.classList.add("enabled");
       });
 
-      // Botón repetir
-      repeatButton.addEventListener("click", () => {
-        buttons.classList.remove("enabled");
-        background.pause();
-        background.style.opacity = 0;
-        audio.pause();
-        audio.currentTime = 0;
+      startBtn.querySelector("button").onclick = () => {
+        startBtn.classList.remove("enabled");
+        const video = videos[0];
+        video.play();
+        audio.play();
 
+        video.addEventListener("ended", () => {
+          showContinue(() => {
+            video.classList.remove("active");
+            playVideoStep(1);
+          });
+        }, { once: true });
+      };
+
+      function playVideoStep(index) {
+        const video = videos[index];
+        video.classList.add("active");
+        video.muted = false;
+        video.play();
+
+        if (index === 0) audio.play();
+        if (index === 3) {
+          video5.currentTime = 0;
+          video5.play();
+        }
+
+        video.addEventListener("ended", () => {
+          if (index < videos.length - 1) {
+            showContinue(() => {
+              video.classList.remove("active");
+              playVideoStep(index + 1);
+            });
+          } else {
+            video.classList.remove("active");
+            video5.style.display = "block";
+            video5.classList.add("active");
+            showFinalButtons();
+          }
+        }, { once: true });
+      }
+
+      function showContinue(callback) {
+        continueBtn.classList.add("enabled");
+        const btn = continueBtn.querySelector("button");
+        btn.onclick = () => {
+          continueBtn.classList.remove("enabled");
+          callback();
+        };
+      }
+
+      function showFinalButtons() {
+        finalButtons.classList.add("enabled");
+      }
+
+      repeatBtn.addEventListener("click", () => {
+        finalButtons.classList.remove("enabled");
         videos.forEach(v => {
           v.pause();
           v.currentTime = 0;
-          v.style.display = "none";
+          v.classList.remove("active");
         });
+        video5.pause();
+        video5.currentTime = 0;
+        video5.style.display = "none";
+        video5.classList.remove("active");
 
-        videos[0].style.display = "block";
-        videos[0].muted = true;
-        videos[0].play();
+        audio.pause();
+        audio.currentTime = 0;
+
+        video0.currentTime = 0;
+        video0.style.display = "block";
+        video0.play().catch(() => {
+          fallback.style.display = "flex";
+        });
       });
+
+      document.addEventListener('contextmenu', e => e.preventDefault());
     }
   </script>
-
 </body>
 </html>
