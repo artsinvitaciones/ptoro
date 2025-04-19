@@ -189,7 +189,6 @@
   </style>
 </head>
 <body oncontextmenu="return false">
-
   <div id="unsupported-browser">
     <div>
       <p>⚠️ Lo sentimos 😢</p>
@@ -349,21 +348,15 @@
         }, { once: true });
       }
 
-      // ✅ Corrección aquí
+      // 🔧 CORRECCIÓN APLICADA AQUÍ
       function showContinue(callback) {
         continueBtn.classList.add("enabled");
         const btn = continueBtn.querySelector("button");
 
-        // Reiniciar animaciones visuales (opcional, pero mejora UX)
-        const spans = btn.querySelectorAll("span");
-        spans.forEach(span => {
-          span.style.animation = 'none';
-          span.offsetHeight;
-          span.style.animation = '';
-        });
+        const newBtn = btn.cloneNode(true);
+        btn.parentNode.replaceChild(newBtn, btn);
 
-        btn.onclick = null;
-        btn.onclick = () => {
+        newBtn.onclick = () => {
           continueBtn.classList.remove("enabled");
           callback();
         };
