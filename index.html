@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Experiencia Interactiva</title>
+  <title>Experiencia Interactiva</title> <!-- notoques nada del codigo solo el tema de las pantallas responsivas resolviendo el tema de que en algunos navegadores lo hace mas grande no toques nada de los botones estan bien asi -->
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
@@ -13,13 +13,21 @@
       background: black;
       font-family: sans-serif;
     }
+
+    /* ✅ Ajuste responsivo para videos */
     video {
       position: absolute;
       top: 0; left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+      max-width: 100vw;
+      max-height: 100vh;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      background-color: black;
+      display: block;
+      margin: 0 auto;
     }
+
     #video0 { z-index: 6; }
     #video1 { z-index: 5; display: none; }
     #video2 { z-index: 4; display: none; }
@@ -247,25 +255,17 @@
       });
 
       videos[4].addEventListener("ended", () => {
-  // Oculta todos los videos anteriores
-  videos.slice(0, 5).forEach(v => v.style.display = "none");
-
-  // Muestra y reproduce video5 en loop
-  videos[5].style.display = "block";
-  videos[5].style.opacity = 1;
-  videos[5].play().catch(err => {
-    console.error("Error al reproducir video5:", err);
-  });
-
-  // Habilita botones finales
-  buttonsContainer.classList.add("enabled");
-  allLinks.forEach(link => {
-    link.classList.remove("inactive-link");
-    link.removeAttribute("tabindex");
-    link.style.pointerEvents = "auto";
-  });
-});
-
+        videos.slice(0, 5).forEach(v => v.style.display = "none");
+        videos[5].style.display = "block";
+        videos[5].style.opacity = 1;
+        videos[5].play().catch(err => console.error("Error al reproducir video5:", err));
+        buttonsContainer.classList.add("enabled");
+        allLinks.forEach(link => {
+          link.classList.remove("inactive-link");
+          link.removeAttribute("tabindex");
+          link.style.pointerEvents = "auto";
+        });
+      });
 
       repeatButton.addEventListener("click", () => {
         videos.slice(1, 5).forEach(v => {
