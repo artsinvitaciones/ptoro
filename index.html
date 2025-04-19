@@ -194,6 +194,8 @@
     const finalButtons = document.getElementById("final-buttons");
     const repeatBtn = document.getElementById("repeat-button");
 
+    let isTransitioning = false;
+
     if (isXiaomi) {
       unsupported.style.display = "flex";
       video0.style.display = "none";
@@ -214,13 +216,16 @@
       });
 
       video0.addEventListener("ended", () => {
-        video0.style.display = "none";
         const video = videos[0];
         video.classList.add("active", "fade-in");
         video.muted = false;
         video.pause();
         video.currentTime = 0;
-        startBtn.classList.add("enabled");
+
+        setTimeout(() => {
+          video0.style.display = "none";
+          startBtn.classList.add("enabled");
+        }, 100);
       });
 
       startBtn.querySelector("button").onclick = () => {
@@ -238,7 +243,11 @@
       };
 
       function playVideoStep(index) {
+        if (isTransitioning) return;
+        isTransitioning = true;
+
         const video = videos[index];
+        console.log("▶️ Reproduciendo video índice:", index);
         video.classList.add("active");
         video.muted = false;
         video.play();
@@ -250,6 +259,7 @@
         }
 
         video.addEventListener("ended", () => {
+          isTransitioning = false;
           if (index < videos.length - 1) {
             showContinue(() => {
               video.classList.remove("active");
