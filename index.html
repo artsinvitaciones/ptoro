@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -25,7 +26,7 @@
     #video2 { z-index: 4; display: none; }
     #video3 { z-index: 3; display: none; }
     #video4 { z-index: 2; display: none; }
-    #video5 { z-index: 1; display: none; /* Hidden initially */ }
+    #video5 { z-index: 1; opacity: 0; transition: opacity 1s ease; }
 
     #unsupported-browser {
       position: fixed;
@@ -224,18 +225,16 @@
       });
       videos[1].addEventListener("ended", () => continueButtons[0].style.display = "block");
       continueButtons[0].addEventListener("click", () => showVideo(2, 0));
-
       videos[2].addEventListener("ended", () => continueButtons[1].style.display = "block");
       continueButtons[1].addEventListener("click", () => showVideo(3, 1));
-
       videos[3].addEventListener("ended", () => continueButtons[2].style.display = "block");
-      continueButtons[2].addEventListener("click", () => showVideo(4, 2));
+      continueButtons[2].addEventListener("click", () => {
+        showVideo(4, 2);
+        videos[5].play();
+      });
 
       videos[4].addEventListener("ended", () => {
-        videos[4].style.display = "none";
-        videos[5].style.display = "block"; // Show video5 immediately
-        videos[5].play();
-        videos[5].loop = true;
+        videos[5].style.opacity = 1;
         buttonsContainer.classList.add("enabled");
         allLinks.forEach(link => {
           link.classList.remove("inactive-link");
@@ -245,7 +244,22 @@
       });
 
       repeatButton.addEventListener("click", () => {
-      location.reload();
+        videos.slice(1, 5).forEach(v => {
+          v.pause();
+          v.currentTime = 0;
+          v.style.display = "none";
+        });
+        videos[5].pause();
+        videos[5].style.opacity = 0;
+        videos[1].style.display = "block";
+        audio.pause();
+        audio.currentTime = 0;
+        buttonsContainer.classList.remove("enabled");
+        allLinks.forEach(link => {
+          link.classList.add("inactive-link");
+          link.setAttribute("tabindex", "-1");
+          link.style.pointerEvents = "none";
+        });
       });
 
       function showVideo(next, btnIdx) {
