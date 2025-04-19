@@ -22,9 +22,18 @@
       object-fit: cover;
     }
 
-    #video0 { z-index: 3; }
-    .video-step { z-index: 2; display: none; }
-    .video-step.active { display: block; }
+    #video0 {
+      z-index: 3;
+      opacity: 1;
+    }
+
+    .video-step {
+      z-index: 2;
+      display: none;
+    }
+    .video-step.active {
+      display: block;
+    }
 
     .continue-button, .final-buttons {
       position: absolute;
@@ -143,12 +152,12 @@
     <source src="assets/music.mp3" type="audio/mpeg" />
   </audio>
 
-  <!-- Botón Comenzar (nuevo) -->
+  <!-- Botón Comenzar -->
   <div class="continue-button" id="start-button">
     <button>Comenzar</button>
   </div>
 
-  <!-- Botón Continuar (ya estaba) -->
+  <!-- Botón Continuar -->
   <div class="continue-button" id="continue-button">
     <button>Continuar</button>
   </div>
@@ -214,18 +223,23 @@
       });
 
       video0.addEventListener("ended", () => {
-        video0.style.display = "none";
-        const video = videos[0]; // video1
-        video.classList.add("active");
-        video.muted = false;
-        video.pause();
-        video.currentTime = 0;
-        startBtn.classList.add("enabled");
+        video0.style.transition = "opacity 1s ease";
+        video0.style.opacity = 0;
+
+        setTimeout(() => {
+          video0.style.display = "none";
+          const video = videos[0]; // video1
+          video.classList.add("active");
+          video.muted = false;
+          video.pause();
+          video.currentTime = 0;
+          startBtn.classList.add("enabled");
+        }, 1000);
       });
 
       startBtn.querySelector("button").onclick = () => {
         startBtn.classList.remove("enabled");
-        const video = videos[0]; // video1
+        const video = videos[0];
         video.play();
         audio.play();
 
@@ -293,6 +307,7 @@
         audio.currentTime = 0;
 
         video0.currentTime = 0;
+        video0.style.opacity = 1;
         video0.style.display = "block";
         video0.play().catch(() => {
           fallback.style.display = "flex";
