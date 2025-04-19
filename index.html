@@ -247,25 +247,25 @@
       });
 
       videos[4].addEventListener("ended", () => {
-        videos[5].pause();
-        videos[5].currentTime = 0;
-        videos[5].style.display = "block";
+  // Oculta todos los videos anteriores
+  videos.slice(0, 5).forEach(v => v.style.display = "none");
 
-        setTimeout(() => {
-          videos[5].play().then(() => {
-            videos[5].style.opacity = 1;
-          }).catch(err => {
-            console.error("Error al reproducir video5:", err);
-          });
-        }, 100);
+  // Muestra y reproduce video5 en loop
+  videos[5].style.display = "block";
+  videos[5].style.opacity = 1;
+  videos[5].play().catch(err => {
+    console.error("Error al reproducir video5:", err);
+  });
 
-        buttonsContainer.classList.add("enabled");
-        allLinks.forEach(link => {
-          link.classList.remove("inactive-link");
-          link.removeAttribute("tabindex");
-          link.style.pointerEvents = "auto";
-        });
-      });
+  // Habilita botones finales
+  buttonsContainer.classList.add("enabled");
+  allLinks.forEach(link => {
+    link.classList.remove("inactive-link");
+    link.removeAttribute("tabindex");
+    link.style.pointerEvents = "auto";
+  });
+});
+
 
       repeatButton.addEventListener("click", () => {
         videos.slice(1, 5).forEach(v => {
