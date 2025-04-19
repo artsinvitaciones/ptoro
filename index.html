@@ -20,9 +20,10 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      cursor: pointer; /* para indicar clic en video1 */
     }
 
-    #video0 { z-index: 3; }
+    #video0 { z-index: 3; cursor: default; }
     .video-step { z-index: 2; display: none; }
     .video-step.active { display: block; }
 
@@ -98,15 +99,9 @@
       to { opacity: 1; }
     }
 
-    @media (max-width: 480px) {
-      .button-img { width: 50px; }
-    }
-    @media (min-width: 481px) and (max-width: 768px) {
-      .button-img { width: 60px; }
-    }
-    @media (min-width: 769px) {
-      .button-img { width: 70px; }
-    }
+    @media (max-width: 480px) { .button-img { width: 50px; } }
+    @media (min-width: 481px) and (max-width: 768px) { .button-img { width: 60px; } }
+    @media (min-width: 769px) { .button-img { width: 70px; } }
   </style>
 </head>
 <body oncontextmenu="return false">
@@ -146,29 +141,17 @@
     <source src="assets/music.mp3" type="audio/mpeg" />
   </audio>
 
-  <div class="continue-button" id="start-button">
-    <button>Comenzar</button>
-  </div>
-
+  <!-- Botón Continuar para pasos 2 en adelante -->
   <div class="continue-button" id="continue-button">
     <button>Continuar</button>
   </div>
 
+  <!-- Botones finales -->
   <div class="final-buttons" id="final-buttons">
     <div class="buttons-container">
-      <div>
-        <a href="https://maps.app.goo.gl/iLidSW6oDsJFU3Z18" target="_blank">
-          <img src="assets/salon.png" class="button-img" alt="Salón" />
-        </a>
-      </div>
-      <div>
-        <a href="https://api.whatsapp.com/send?phone=+59175200294&text=Hola%20quiero%20confirmar%20mi%20asistencia" target="_blank">
-          <img src="assets/botonasistencia.png" class="button-img" alt="Confirmar asistencia" />
-        </a>
-      </div>
-      <div>
-        <img src="assets/repetir.png" class="button-img" alt="Repetir" id="repeat-button" />
-      </div>
+      <div><a href="https://maps.app.goo.gl/iLidSW6oDsJFU3Z18" target="_blank"><img src="assets/salon.png" class="button-img" alt="Salón" /></a></div>
+      <div><a href="https://api.whatsapp.com/send?phone=+59175200294&text=Hola%20quiero%20confirmar%20mi%20asistencia" target="_blank"><img src="assets/botonasistencia.png" class="button-img" alt="Confirmar asistencia" /></a></div>
+      <div><img src="assets/repetir.png" class="button-img" alt="Repetir" id="repeat-button" /></div>
     </div>
   </div>
 
@@ -189,7 +172,6 @@
     const video5 = document.getElementById("video5");
 
     const audio = document.getElementById("audio");
-    const startBtn = document.getElementById("start-button");
     const continueBtn = document.getElementById("continue-button");
     const finalButtons = document.getElementById("final-buttons");
     const repeatBtn = document.getElementById("repeat-button");
@@ -200,7 +182,6 @@
       videos.forEach(v => v.style.display = "none");
       video5.style.display = "none";
       audio.remove();
-      startBtn.remove();
       continueBtn.remove();
       finalButtons.remove();
     } else {
@@ -213,29 +194,34 @@
         });
       });
 
+      // Al terminar video0: ocultar y mostrar video1 pausado
       video0.addEventListener("ended", () => {
         video0.style.display = "none";
-        const video = videos[0];
-        video.classList.add("active", "fade-in");
-        video.muted = false;
-        video.pause();
-        video.currentTime = 0;
-        startBtn.classList.add("enabled");
+        const v1 = videos[0];
+        v1.classList.add("active", "fade-in");
+        v1.muted = true;
+        v1.currentTime = 0;
+        v1.pause();
+        // habilitar clic para arrancar
       });
 
-      startBtn.querySelector("button").onclick = () => {
-        startBtn.classList.remove("enabled");
-        const video = videos[0];
-        video.play();
+      // Click en video1: reproducir video1 + audio y luego Continuar
+      const v1 = videos[0];
+      v1.addEventListener("click", function onFirstClick() {
+        // solo la primera vez
+        v1.removeEventListener("click", onFirstClick);
+        v1.style.cursor = "default";
+        v1.muted = false;
+        v1.play();
         audio.play();
 
-        video.addEventListener("ended", () => {
+        v1.addEventListener("ended", () => {
           showContinue(() => {
-            video.classList.remove("active");
+            v1.classList.remove("active");
             playVideoStep(1);
           });
         }, { once: true });
-      };
+      });
 
       function playVideoStep(index) {
         const video = videos[index];
@@ -243,7 +229,6 @@
         video.muted = false;
         video.play();
 
-        if (index === 0) audio.play();
         if (index === 3) {
           video5.currentTime = 0;
           video5.play();
