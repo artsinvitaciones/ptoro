@@ -270,9 +270,9 @@
     } else {
       videos.forEach(v => v.load());
 
-     window.addEventListener("load", () => {
-  fallback.style.display = "flex";
-});
+      window.addEventListener("load", () => {
+        videos[0].play().catch(() => fallback.style.display = "flex");
+      });
 
       fallback.addEventListener("click", () => {
         videos[0].play().then(() => fallback.style.display = "none");
