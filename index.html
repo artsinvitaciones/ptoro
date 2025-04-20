@@ -261,13 +261,16 @@
     const allLinks = document.querySelectorAll(".buttons-container a");
     const repeatButton = document.getElementById("repeat-button");
 
-    const isXiaomi = /miuibrowser|miui|miwebview/.test(navigator.userAgent.toLowerCase());
-    if (isXiaomi) {
-      unsupported.style.display = "flex";
-      videos.forEach(v => v.style.display = "none");
-      audio.remove();
-      buttonsContainer.style.display = "none";
-    } else {
+  const ua = navigator.userAgent.toLowerCase();
+const isXiaomi = /miuibrowser|miui|miwebview/.test(ua);
+const isEdge = /edg\//.test(ua) || /edge\//.test(ua);
+
+if (isXiaomi || isEdge) {
+  unsupported.style.display = "flex";
+  videos.forEach(v => v.style.display = "none");
+  audio.remove();
+  buttonsContainer.style.display = "none";
+} else {
       videos.forEach(v => v.load());
 
       window.addEventListener("load", () => {
