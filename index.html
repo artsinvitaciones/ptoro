@@ -88,34 +88,35 @@
     }
 
     @keyframes pulse {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
-}
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.05);
+      }
+    }
 
-.continue-button {
-  position: absolute;
-  bottom: 15px;
-  right: 15px;
-  z-index: 11;
-  padding: 10px 20px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 2px solid white;
-  color: white;
-  cursor: pointer;
-  font-size: 12px;
-  display: none;
-  border-radius: 12px;          /* Bordes redondeados */
-  animation: pulse 1.5s infinite; /* Animación pulse */
-}
+    .continue-button {
+      position: absolute;
+      bottom: 15px;
+      right: 15px;
+      z-index: 11;
+      padding: 10px 20px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid white;
+      color: white;
+      cursor: pointer;
+      font-size: 12px;
+      display: none;
+      border-radius: 12px;
+      animation: pulse 1.5s infinite;
+    }
+
     .continue-image {
       position: absolute;
       top: 0;
       left: 50%;
-      transform: translateX(-50%);  /* Centra horizontalmente */
+      transform: translateX(-50%);
       height: 100%;
       aspect-ratio: 9 / 16;
       object-fit: cover;
@@ -191,12 +192,10 @@
 
   <div id="start-fallback">Toca para comenzar</div>
 
-  <!-- PNGs que acompañan a los botones de continuar -->
   <img src="assets/png1.png" alt="Imagen 1" id="img1" class="continue-image" />
   <img src="assets/png2.png" alt="Imagen 2" id="img2" class="continue-image" />
   <img src="assets/png3.png" alt="Imagen 3" id="img3" class="continue-image" />
 
-  <!-- Videos -->
   <div class="video-wrapper">
     <video id="video0" autoplay playsinline muted preload="auto" controlsList="nodownload">
       <source src="assets/video0.mp4" type="video/mp4" />
@@ -267,7 +266,17 @@
       videos.forEach(v => v.style.display = "none");
       audio.remove();
       buttonsContainer.style.display = "none";
-    } else {
+    }
+
+    const isBingApp = /bing/i.test(navigator.userAgent) && !/edg/i.test(navigator.userAgent);
+    if (isBingApp) {
+      unsupported.style.display = "flex";
+      videos.forEach(v => v.style.display = "none");
+      audio.remove();
+      buttonsContainer.style.display = "none";
+    }
+
+    else {
       videos.forEach(v => v.load());
 
       window.addEventListener("load", () => {
