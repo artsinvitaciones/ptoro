@@ -88,35 +88,34 @@
     }
 
     @keyframes pulse {
-      0%, 100% {
-        transform: scale(1);
-      }
-      50% {
-        transform: scale(1.05);
-      }
-    }
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
 
-    .continue-button {
-      position: absolute;
-      bottom: 15px;
-      right: 15px;
-      z-index: 11;
-      padding: 10px 20px;
-      background: rgba(255, 255, 255, 0.1);
-      border: 2px solid white;
-      color: white;
-      cursor: pointer;
-      font-size: 12px;
-      display: none;
-      border-radius: 12px;
-      animation: pulse 1.5s infinite;
-    }
-
+.continue-button {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  z-index: 11;
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid white;
+  color: white;
+  cursor: pointer;
+  font-size: 12px;
+  display: none;
+  border-radius: 12px;          /* Bordes redondeados */
+  animation: pulse 1.5s infinite; /* Animación pulse */
+}
     .continue-image {
       position: absolute;
       top: 0;
       left: 50%;
-      transform: translateX(-50%);
+      transform: translateX(-50%);  /* Centra horizontalmente */
       height: 100%;
       aspect-ratio: 9 / 16;
       object-fit: cover;
@@ -177,6 +176,7 @@
   </style>
 </head>
 <body oncontextmenu="return false">
+
   <div id="unsupported-browser">
     <div>
       <p>⚠️ Lo sentimos 😢</p>
@@ -191,10 +191,12 @@
 
   <div id="start-fallback">Toca para comenzar</div>
 
+  <!-- PNGs que acompañan a los botones de continuar -->
   <img src="assets/png1.png" alt="Imagen 1" id="img1" class="continue-image" />
   <img src="assets/png2.png" alt="Imagen 2" id="img2" class="continue-image" />
   <img src="assets/png3.png" alt="Imagen 3" id="img3" class="continue-image" />
 
+  <!-- Videos -->
   <div class="video-wrapper">
     <video id="video0" autoplay playsinline muted preload="auto" controlsList="nodownload">
       <source src="assets/video0.mp4" type="video/mp4" />
@@ -260,8 +262,6 @@
     const repeatButton = document.getElementById("repeat-button");
 
     const isXiaomi = /miuibrowser|miui|miwebview/.test(navigator.userAgent.toLowerCase());
-    const isSamsung = /SamsungBrowser/i.test(navigator.userAgent);
-
     if (isXiaomi) {
       unsupported.style.display = "flex";
       videos.forEach(v => v.style.display = "none");
@@ -272,19 +272,6 @@
 
       window.addEventListener("load", () => {
         videos[0].play().catch(() => fallback.style.display = "flex");
-
-        if (isSamsung) {
-          continueImages.forEach(img => {
-            img.style.mixBlendMode = "normal";
-            img.style.opacity = "1";
-            img.style.display = "block";
-            img.style.zIndex = "999";
-          });
-          continueButtons.forEach(btn => {
-            btn.style.background = "transparent";
-            btn.style.backdropFilter = "none";
-          });
-        }
       });
 
       fallback.addEventListener("click", () => {
